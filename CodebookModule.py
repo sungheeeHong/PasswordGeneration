@@ -45,10 +45,8 @@ def Codebook_HorizontalSliding(vocab:list):
     codebook = {vocab[i] : coded_data[i] for i in range(len(vocab))}
     return codebook
 
-def Codebook_VowelToQWERTY(vocab:list):
+def Codebook_ChangeVowel(vocab:list, substitute:str): # substitute: 모음 대신 넣을 것(string)
     vowels = 'aeiou'
-    qwerty = 'qwerty'
-
     coded_data = []
 
     for token in vocab:
@@ -56,14 +54,28 @@ def Codebook_VowelToQWERTY(vocab:list):
         v_index = 0
         for alphabet in token:
             # out of range 처리
-            if v_index == 6:
+            if v_index == len(substitute):
                 v_index = 0
-            # 모음이 나오면 qwerty로 변환
+            # 모음이 나오면 change로 변환
             if alphabet in vowels:
-                coded_temp += qwerty[v_index]
+                coded_temp += substitute[v_index]
                 v_index += 1
             else:
                 coded_temp += alphabet
         coded_data.append(coded_temp)
     codebook = {vocab[i] : coded_data[i] for i in range(len(vocab))}
     return codebook
+
+def SthToString(sth:list): # Input이 어떻게 들어올지 모르겠어서 일단 만들어둠. 원하는 모음을 대체할 것을 리스트 형태로 넣으면 string으로 변환해 돌려줌. 
+    if len(sth) == 0:
+        print("There is nothing in input. ")
+        print("Default is QWERTY. ")
+        string = 'QWERTY'
+        return string
+    elif len(sth) == 1:
+        string = str(sth)
+        return string
+    else:
+        for i in range(len(sth)):
+            string += str(sth[i])
+        return string
