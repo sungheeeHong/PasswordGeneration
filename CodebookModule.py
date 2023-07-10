@@ -44,3 +44,26 @@ def Codebook_HorizontalSliding(vocab:list):
                 coded_temp += token[a_index]
     codebook = {vocab[i] : coded_data[i] for i in range(len(vocab))}
     return codebook
+
+def Codebook_VowelToQWERTY(vocab:list):
+    vowels = 'aeiou'
+    qwerty = 'qwerty'
+
+    coded_data = []
+
+    for token in vocab:
+        coded_temp = ''
+        v_index = 0
+        for alphabet in token:
+            # out of range 처리
+            if v_index == 6:
+                v_index = 0
+            # 모음이 나오면 qwerty로 변환
+            if alphabet in vowels:
+                coded_temp += qwerty[v_index]
+                v_index += 1
+            else:
+                coded_temp += alphabet
+        coded_data.append(coded_temp)
+    codebook = {vocab[i] : coded_data[i] for i in range(len(vocab))}
+    return codebook
