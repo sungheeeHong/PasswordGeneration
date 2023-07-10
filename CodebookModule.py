@@ -45,7 +45,7 @@ def Codebook_HorizontalSliding(vocab:list):
     codebook = {vocab[i] : coded_data[i] for i in range(len(vocab))}
     return codebook
 
-def Codebook_ChangeVowel(vocab:list, substitute:str): # substitute: 모음 대신 넣을 것(string)
+def Codebook_ChangeVowel(vocab:list, substitute:str='QWERTY'): # substitute: 모음 대신 넣을 것(string)
     vowels = 'aeiou'
     coded_data = []
 
