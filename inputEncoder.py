@@ -20,6 +20,7 @@ class InputEncoder(PreprocUserInput):
         self.model = FastText.load(model_name)
         self.pos_list = np.load(pos_list_name)
         self.dot = dot_product
+        self.secret_sent = []
 
         # what to run
         self._choose_sent_type()
@@ -75,8 +76,8 @@ class InputEncoder(PreprocUserInput):
                     print(f"Nothing similar with {self.sent_type[i]}")
                     break
         
-        secret_sent = self._show_word_from_index(index_result=index_result)
-        self._print_result(secret_sent=secret_sent, choosed_cos_sim=choosed_cos_sim)
+        self.secret_sent = self._show_word_from_index(index_result=index_result)
+        self._print_result(choosed_cos_sim=choosed_cos_sim)
 
     def _show_word_from_index(self, index_result:list):
         result = []
@@ -84,10 +85,10 @@ class InputEncoder(PreprocUserInput):
             sent_comp = self.sent_type[i]
             idx = index_result[i]
             result.append(self.pos_list[sent_comp][idx])
-        result[0] = result[0].capitalize()
         return result
 
-    def _print_result(self, secret_sent:list, choosed_cos_sim:list):
+    def _print_result(self, choosed_cos_sim:list):
+        self.secret_sent[0] = self.secret_sent[0].capitalize()
         print('-'*20)
         print("This is your input")
         print(*self.preprocUserInput.user_input, sep=' | ')
@@ -96,7 +97,7 @@ class InputEncoder(PreprocUserInput):
         print(*self.preprocUserInput.server_input, sep=' | ')
         print("")
         print("This is your secret sentence")
-        print(*secret_sent)
+        print(*self.secret_sent)
         print("")
         print("This is each cosine similarity")
         print(*choosed_cos_sim, sep=' | ')
