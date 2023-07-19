@@ -1,7 +1,7 @@
 ## Password Generation
 main에서 작동 방식 확인 가능합니다. 
 
-**1. genEmbedModel.ipynb**<br>
+**1. genEmbedModel.ipynb -> GenEmbedModel_ver2.ipynb**<br>
 : 프로그램 작동 전, embedding model들을 만드는 단계입니다. 
 - pos_list.npz: 각 POS 별로 단어들의 리스트를 만들어 저장되어 있습니다.<br>
   ```
