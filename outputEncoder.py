@@ -24,7 +24,7 @@ class Codebook():
         for i in range(len(cb_list)):
             if np.array_equal(cb_list[i][:128], wv):
                 return cb_list[i][128:]
-        print(f"Error: There is no word vector in {pos}_codebook")
+        return np.nan
 
     def pv_to_wv(self, pos:str, pv):
         pos_name = f'{pos}_codebook'
@@ -44,7 +44,6 @@ class OutputEncoder(Codebook): # secret sentence -> password
         
         # object list
         self.secret_sent = inputEncoder.secret_sent[:]
-        print("self.secret_sent: ", self.secret_sent)
         self.sent_type = inputEncoder.sent_type[:]
         self.wv_model = FastText.load(wv_model_name)
         self.decode_model = {}
@@ -65,11 +64,17 @@ class OutputEncoder(Codebook): # secret sentence -> password
         for word in self.secret_sent:
             temp = self.wv_model.wv[word]
             self.wv.append(temp)
+        first_word = self.secret_sent[0]
+        first_word = first_word[0].lower() + first_word[1:]
+        first_word_wv = self.wv_model.wv[first_word]
+        self.wv.append(first_word_wv)
 
     def _make_pw_vec(self):
         codebook = Codebook()
         for i in range(len(self.sent_type)):
             temp = codebook.wv_to_pv(pos=self.sent_type[i], wv=self.wv[i])
+            if np.array_equal(temp, np.nan):
+                temp = codebook.wv_to_pv(pos=self.sent_type[i], wv=self.wv[-1])
             self.pv.append(temp)
 
     def _get_pwd_model(self):
@@ -85,7 +90,6 @@ class OutputEncoder(Codebook): # secret sentence -> password
     def _decode_pw_vec(self):
         for i in range(len(self.sent_type)):
             pos = self.sent_type[i]
-            print("pos: ", pos)
             model = self.decode_model[pos]
             temp = model.wv.most_similar([self.pv[i]], topn=1)
             pwd_tup = temp[0]
