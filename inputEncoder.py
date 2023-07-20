@@ -65,7 +65,7 @@ class InputEncoder(PreprocUserInput):
             index = self.rand_seed % length
             start_index = index
             while True:
-                if cos_result[index] > 0.7:
+                if cos_result[index] > threshold:
                     index_result.append(index)
                     choosed_cos_sim.append(cos_result[index])
                     break
